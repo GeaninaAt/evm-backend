@@ -8,6 +8,7 @@ C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\service\ConfigUserDetailsService.java
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\repository\EventRepository.java
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\service\OrganizerService.java
+C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\domain\validation\CheckEventCategory.java
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\controller\OrganizerEndpoint.java
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\repository\LocationRepository.java
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\Application.java
@@ -17,11 +18,13 @@ C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\service\EventService.java
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\domain\Location.java
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\controller\exception\LocationNotFoundException.java
+C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\service\utils\ServiceUtils.java
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\controller\LocationEndpoint.java
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\controller\create\CreateOrganizer.java
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\domain\Event.java
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\domain\Role.java
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\controller\create\CreateLocation.java
+C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\domain\validation\CheckEventCategoryValidator.java
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\service\LocationService.java
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\controller\create\CreateEvent.java
 C:\Users\gatomulesei\Desktop\EventManagement\src\main\java\com\event\management\WebMvcConfig.java
