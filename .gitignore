@@ -9,3 +9,9 @@ out
 gen
 target
 evm.log
+.idea/inspectionProfiles/
+src/test/
+target/classes/com/event/management/domain/validation/
+target/classes/com/event/management/service/utils/
+target/classes/validationMessages.properties
+target/generated-sources/
