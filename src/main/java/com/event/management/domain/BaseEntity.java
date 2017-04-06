@@ -32,15 +32,15 @@ public class BaseEntity extends AbstractPersistable<Long> {
     @Column(name = "created_date")
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "yyy-MM-dd HH:mm:ss")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdDate;
 
     @Column(name = "last_modified_date")
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "yyy-MM-dd HH:mm:ss")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastModifiedDate;
 
     @Override

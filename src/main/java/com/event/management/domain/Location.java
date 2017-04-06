@@ -1,7 +1,10 @@
 package com.event.management.domain;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 /**
@@ -12,6 +15,11 @@ public class Location extends BaseEntity{
 
     private static final long serialVersionUID = 1L;
 
+    private static final int MINIMUM_LENGTH = 2;
+    private static final int MAXIMUM_LENGTH = 50;
+
+    @NotBlank(message = "{location.validation.error.locationName}")
+    @Pattern(regexp = "^([a-zA-Z]+([ '-][a-zA-Z]+)*){" + MINIMUM_LENGTH + "," + MAXIMUM_LENGTH + "}$", message = "{location.validation.error.match.locationName}")
     private String locationName;
 
     private String district;
@@ -25,7 +33,6 @@ public class Location extends BaseEntity{
 
     //private double latitude;
     //private double longitude;
-
 
     public String getLocationName() {
         return locationName;

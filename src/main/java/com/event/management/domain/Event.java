@@ -1,10 +1,16 @@
 package com.event.management.domain;
 
+import com.event.management.domain.validation.CheckEventCategory;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +23,11 @@ public class Event extends BaseEntity{
 
     private static final long serialVersionUID = 1L;
 
+    private static final int MINIMUM_LENGTH = 2;
+    private static final int MAXIMUM_LENGTH = 50;
+
+    @NotBlank(message = "{event.validation.error.eventName}")
+    @Pattern(regexp = "^([a-zA-Z]+([ '-][a-zA-Z]+)*){" + MINIMUM_LENGTH + "," + MAXIMUM_LENGTH + "}$", message = "{event.validation.error.match.eventName}")
     private String eventName;
 
     @Lob
@@ -35,9 +46,19 @@ public class Event extends BaseEntity{
     @JsonIgnore
     private List<User> attendees;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @NotNull(message = "{event.validation.error.startDate}")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @NotNull(message = "{event.validation.error.endDate}")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endDate;
 
+    @CheckEventCategory
     private String category;
 
     private boolean isFree;
