@@ -8,7 +8,7 @@ import java.util.Date;
 public class CreateEvent {
 
     private String eventName;
-    private String description;
+    private String eventDescription;
     private Long organizerId;
     private Long locationId;
     private Date startDate;
@@ -25,12 +25,12 @@ public class CreateEvent {
         this.eventName = eventName;
     }
 
-    public String getDescription() {
-        return description;
+    public String getEventDescription() {
+        return eventDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setEventDescription(String eventDescription) {
+        this.eventDescription = eventDescription;
     }
 
     public Long getOrganizerId() {
