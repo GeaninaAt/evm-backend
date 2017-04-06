@@ -18,7 +18,7 @@ import java.security.Principal;
 /**
  * Created by gatomulesei on 4/5/2017.
  */
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:8000")
 @RestController
 @RequestMapping("/rest/users")
 public class UserEndpoint {
@@ -32,8 +32,8 @@ public class UserEndpoint {
     private UserService userService;
 
     @PostConstruct
-    public void postInit(){
-        if(userRepository.findByUsername("user") == null){
+    public void postInit() {
+        if (userRepository.findByUsername("user") == null) {
             LOGGER.debug("Adding default user: 'user'");
 
             final User defaultUser = new User();
@@ -50,20 +50,20 @@ public class UserEndpoint {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:8000")
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ResponseEntity<?> registerUser(@RequestBody @Valid User user){
-        if(userRepository.findByEmail(user.getEmail()) != null){
+    public ResponseEntity<?> registerUser(@RequestBody @Valid User user) {
+        if (userRepository.findByEmail(user.getEmail()) != null) {
             LOGGER.info(String.format("Registration cancelled: user with e-mail '%s' already exists."), user.getEmail());
             return ResponseEntity.badRequest().body(new ObjectError("user.email",
                     String.format("User with e-mail '%s' already exists.", user.getEmail())));
         }
-        if(userRepository.findByUsername(user.getUsername()) != null){
+        if (userRepository.findByUsername(user.getUsername()) != null) {
             LOGGER.info(String.format("Registration cancelled: user with username '%s' already exists."), user.getUsername());
             return ResponseEntity.badRequest().body(new ObjectError("user.username",
                     String.format("User with username '%s' already exists.", user.getUsername())));
         }
-        if(!user.getPassword().equals(user.getMatchPassword())){
+        if (!user.getPassword().equals(user.getMatchPassword())) {
             LOGGER.info("Registration cancelled: passwords do not match.");
             return ResponseEntity.badRequest().body(new ObjectError("user.password", "Passwords do not match."));
         }
@@ -77,7 +77,7 @@ public class UserEndpoint {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public Principal user(Principal principal){
+    public Principal user(Principal principal) {
         return principal;
     }
 }
