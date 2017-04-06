@@ -22,24 +22,23 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User addUser(User user){
+    public User addUser(User user) {
         LOGGER.info(String.format("Creating user '%s'", user.getUsername()));
         return userRepository.save(user);
     }
 
-    public User getUser(Long userId){
+    public User getUser(Long userId) {
         LOGGER.info(String.format("Retrieving user with id '%s'", userId));
         return userRepository.findOne(userId);
     }
 
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         LOGGER.info(String.format("Retrieving all users..."));
         return userRepository.findAll();
     }
 
-    public void deleteUser(Long userId){
+    public void deleteUser(Long userId) {
         LOGGER.info(String.format("Deleting user with id '%s'", userId));
         userRepository.delete(userId);
     }
-
 }

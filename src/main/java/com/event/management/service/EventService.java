@@ -18,19 +18,19 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
 
-    public Event addEvent(Event event){
+    public Event addEvent(Event event) {
         return eventRepository.save(event);
     }
 
-    public Event getEvent(Long eventId){
+    public Event getEvent(Long eventId) {
         return eventRepository.findOne(eventId);
     }
 
-    public List<Event> getAllEvents(){
+    public List<Event> getAllEvents() {
         return eventRepository.findAll();
     }
 
-    public void deleteEvent(Long eventId){
+    public void deleteEvent(Long eventId) {
         eventRepository.delete(eventId);
     }
 }

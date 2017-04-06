@@ -18,19 +18,19 @@ public class LocationService {
     @Autowired
     private LocationRepository locationRepository;
 
-    public Location addLocation(Location location){
+    public Location addLocation(Location location) {
         return locationRepository.save(location);
     }
 
-    public Location getLocation(Long locationId){
+    public Location getLocation(Long locationId) {
         return locationRepository.findOne(locationId);
     }
 
-    public List<Location> getAllLocations(){
+    public List<Location> getAllLocations() {
         return locationRepository.findAll();
     }
 
-    public void deleteLocation(Long locationId){
+    public void deleteLocation(Long locationId) {
         locationRepository.delete(locationId);
     }
 }

@@ -18,19 +18,19 @@ public class OrganizerService {
     @Autowired
     private OrganizerRepository organizerRepository;
 
-    public Organizer addOrganizer(Organizer organizer){
+    public Organizer addOrganizer(Organizer organizer) {
         return organizerRepository.save(organizer);
     }
 
-    public Organizer getOrganizer(Long organizerId){
+    public Organizer getOrganizer(Long organizerId) {
         return organizerRepository.findOne(organizerId);
     }
 
-    public List<Organizer> getAllOrganizers(){
+    public List<Organizer> getAllOrganizers() {
         return organizerRepository.findAll();
     }
 
-    public void deleteOrganizer(Long organizerId){
+    public void deleteOrganizer(Long organizerId) {
         organizerRepository.delete(organizerId);
     }
 }
