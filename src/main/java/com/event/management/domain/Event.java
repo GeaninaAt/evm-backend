@@ -2,9 +2,6 @@ package com.event.management.domain;
 
 import com.event.management.domain.validation.CheckEventCategory;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -40,11 +37,11 @@ public class Event extends BaseEntity{
 
     @ManyToOne
     private Location location;
-
+/*
     @ManyToMany(mappedBy = "events", cascade = CascadeType.ALL)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIgnore
-    private List<User> attendees;
+    private List<User> attendees;*/
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -110,14 +107,6 @@ public class Event extends BaseEntity{
 
     public void setLocation(Location location) {
         this.location = location;
-    }
-
-    public List<User> getAttendees() {
-        return attendees;
-    }
-
-    public void setAttendees(List<User> attendees) {
-        this.attendees = attendees;
     }
 
     public Date getStartDate() {

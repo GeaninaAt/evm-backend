@@ -2,82 +2,103 @@ package com.event.management.controller;
 
 import com.event.management.domain.User;
 import com.event.management.repository.UserRepository;
-import com.event.management.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.ObjectError;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
-import javax.validation.Valid;
-import java.net.URI;
-import java.security.Principal;
+import java.util.List;
 
 /**
- * Created by gatomulesei on 4/5/2017.
+ * Created by gatomulesei on 4/11/2017.
  */
-//@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/rest/users")
+@RequestMapping(value = "/api")
 public class UserEndpoint {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserEndpoint.class);
 
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private UserService userService;
 
-    @PostConstruct
-    public void postInit(){
-        if(userRepository.findByUsername("user") == null){
-            LOGGER.debug("Adding default user: 'user'");
+    /**
+     * @return - list of all the retrieveAllUsers of the application
+     */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public List<User> retrieveAllUsers() {
+        return userRepository.findAll();
+    }
 
-            final User defaultUser = new User();
-            defaultUser.setUsername("user");
-            defaultUser.setPassword("pass");
-            defaultUser.setEmail("user@mail");
-            defaultUser.setFirstName("default");
-            defaultUser.setLastName("default");
 
-            userService.addUser(defaultUser);
-            LOGGER.debug("Default user added.");
+    /**
+     * @param userId
+     * @return - user by his ID
+     */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
+    public ResponseEntity<User> retrieveUser(@PathVariable Long userId) {
+        User user = userRepository.findOne(userId);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            LOGGER.debug("Default user already exists. Skipping creation...");
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ResponseEntity<?> registerUser(@RequestBody @Valid User user){
-        if(userRepository.findByEmail(user.getEmail()) != null){
-            LOGGER.info(String.format("Registration cancelled: user with e-mail '%s' already exists."), user.getEmail());
-            return ResponseEntity.badRequest().body(new ObjectError("user.email",
-                    String.format("User with e-mail '%s' already exists.", user.getEmail())));
-        }
-        if(userRepository.findByUsername(user.getUsername()) != null){
-            LOGGER.info(String.format("Registration cancelled: user with username '%s' already exists."), user.getUsername());
-            return ResponseEntity.badRequest().body(new ObjectError("user.username",
-                    String.format("User with username '%s' already exists.", user.getUsername())));
-        }
-        if(!user.getPassword().equals(user.getMatchPassword())){
-            LOGGER.info("Registration cancelled: passwords do not match.");
-            return ResponseEntity.badRequest().body(new ObjectError("user.password", "Passwords do not match."));
+    /**
+     * Delete a user by his ID
+     * @param userId
+     * @return
+     */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
+    public ResponseEntity<User> deleteUser(@PathVariable Long userId) {
+        User user = userRepository.findOne(userId);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedUsername = auth.getName();
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else if (user.getUsername().equalsIgnoreCase(loggedUsername)) {
+            throw new RuntimeException("You cannot delete your account!");
+        } else {
+            userRepository.delete(user);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
 
-        //TODO: encode user's password - maybe base64?
-
-        final User createdUser = userService.addUser(user);
-        final URI location = URI.create("/rest/users/" + createdUser.getId());
-
-        return ResponseEntity.created(location).body(createdUser.getId());
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public Principal user(Principal principal){
-        return principal;
+    /**
+     * Add a user
+     * @param user
+     * @return
+     */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        if (userRepository.findOneByUsername(user.getUsername()) != null) {
+            throw new RuntimeException("Username already exists!");
+        }
+        return new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED);
     }
+
+    /**
+     * Edit details of a user
+     * @param user
+     * @return - modified user
+     */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/users", method = RequestMethod.PUT)
+    public User updateUser(@RequestBody User user) {
+        if (userRepository.findOneByUsername(user.getUsername()) != null
+                && userRepository.findOneByUsername(user.getUsername()).getId() != user.getId()) {
+            throw new RuntimeException("Username already exists!");
+        }
+        return userRepository.save(user);
+    }
+
 }
+

@@ -1,135 +1,99 @@
 package com.event.management.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by gatomulesei on 4/5/2017.
+ * Created by gatomulesei on 4/11/2017.
  */
 @Entity
-public class User extends BaseEntity implements UserDetails{
+public class User extends BaseEntity implements UserDetails {
 
-    private static final long serialVersionUID = 1L;
+    private String name;
 
-    @NotNull
-    @NotEmpty
-    private String firstName;
-
-    @NotNull
-    @NotEmpty
-    private String lastName;
-
-    @Email
-    @NotNull
-    @NotEmpty
-    private String email;
-
-    @NotNull
-    @NotEmpty
+    @Column(unique = true)
     private String username;
 
-    @NotNull
-    @NotEmpty
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Transient
-    private String matchPassword;
+    @ElementCollection
+    private List<String> roles = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "event_user")
-    @JsonManagedReference(value = "user-event")
-    private List<Event> events;
-
-
-    @ManyToOne
-    private Role role;
-
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public List<String> getRoles() {
+        return roles;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getMatchPassword() {
-        return matchPassword;
-    }
-
-    public void setMatchPassword(String matchPassword) {
-        this.matchPassword = matchPassword;
-    }
-
-    public List<Event> getEvents() {
-        return events;
-    }
-
-    public void setEvents(List<Event> events) {
-        this.events = events;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;
     }
 
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        for (String role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role));
+        }
+        return authorities;
     }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
 }

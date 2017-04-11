@@ -102,6 +102,7 @@ public class EventEndpoint {
         return eventService.getAllEvents();
     }
 
+
     @RequestMapping(value = "/{eventId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateEvent(@PathVariable Long eventId, @RequestBody @Valid CreateEvent createEvent) {
 
