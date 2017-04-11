@@ -18,7 +18,7 @@ import java.util.List;
  * Created by gatomulesei on 4/11/2017.
  */
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/users")
 public class UserEndpoint {
 
     @Autowired
@@ -26,10 +26,10 @@ public class UserEndpoint {
 
 
     /**
-     * @return - list of all the retrieveAllUsers of the application
+     * @return - list of all the users of the application
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public List<User> retrieveAllUsers() {
         return userRepository.findAll();
     }
@@ -40,7 +40,7 @@ public class UserEndpoint {
      * @return - user by his ID
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     public ResponseEntity<User> retrieveUser(@PathVariable Long userId) {
         User user = userRepository.findOne(userId);
         if (user == null) {
@@ -56,7 +56,7 @@ public class UserEndpoint {
      * @return
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
     public ResponseEntity<User> deleteUser(@PathVariable Long userId) {
         User user = userRepository.findOne(userId);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -79,7 +79,7 @@ public class UserEndpoint {
      * @return
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<User> createUser(@RequestBody User user) {
         if (userRepository.findOneByUsername(user.getUsername()) != null) {
             throw new RuntimeException("Username already exists!");
@@ -87,24 +87,14 @@ public class UserEndpoint {
         return new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED);
     }
 
+
     /**
      * Edit details of a user
      * @param user
      * @return - modified user
      */
-/*    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/users", method = RequestMethod.PUT)
-    public User updateUser(@RequestBody User user) {
-        if (userRepository.findOneByUsername(user.getUsername()) != null
-                && userRepository.findOneByUsername(user.getUsername()).getId() != user.getId()) {
-            throw new RuntimeException("Username already exists!");
-        }
-        return userRepository.save(user);
-    }*/
-
-
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/users/{userId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{userId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User user){
         if (!userRepository.exists(userId)) {
             return ResponseEntity.badRequest().body(new ObjectError("user.id", "Invalid user ID."));
@@ -112,7 +102,9 @@ public class UserEndpoint {
 
         User updatedUser = userRepository.findOne(userId);
         updatedUser.setUsername(user.getUsername());
-        updatedUser.setName(user.getName());
+        updatedUser.setFirstName(user.getFirstName());
+        updatedUser.setLastName(user.getLastName());
+        updatedUser.setEmail(user.getEmail());
         updatedUser.setPassword(user.getPassword());
         updatedUser.setRoles(user.getRoles());
 
