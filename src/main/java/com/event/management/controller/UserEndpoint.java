@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -90,7 +92,7 @@ public class UserEndpoint {
      * @param user
      * @return - modified user
      */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+/*    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/users", method = RequestMethod.PUT)
     public User updateUser(@RequestBody User user) {
         if (userRepository.findOneByUsername(user.getUsername()) != null
@@ -98,7 +100,25 @@ public class UserEndpoint {
             throw new RuntimeException("Username already exists!");
         }
         return userRepository.save(user);
-    }
+    }*/
 
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/users/{userId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User user){
+        if (!userRepository.exists(userId)) {
+            return ResponseEntity.badRequest().body(new ObjectError("user.id", "Invalid user ID."));
+        }
+
+        User updatedUser = userRepository.findOne(userId);
+        updatedUser.setUsername(user.getUsername());
+        updatedUser.setName(user.getName());
+        updatedUser.setPassword(user.getPassword());
+        updatedUser.setRoles(user.getRoles());
+
+        userRepository.save(updatedUser);
+        URI location = URI.create("/users/" + updatedUser.getId());
+        return ResponseEntity.created(location).build();
+    }
 }
 
