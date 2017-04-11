@@ -30,18 +30,11 @@ public class Event extends BaseEntity{
     @Lob
     private String description;
 
-    //private List<String> reviews;
-
     @ManyToOne
     private Organizer organizer;
 
     @ManyToOne
     private Location location;
-/*
-    @ManyToMany(mappedBy = "events", cascade = CascadeType.ALL)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIgnore
-    private List<User> attendees;*/
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
