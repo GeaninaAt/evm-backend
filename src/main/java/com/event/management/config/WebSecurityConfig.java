@@ -1,6 +1,7 @@
 package com.event.management.config;
 
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -37,6 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests() // starts authorizing configurations
+                .antMatchers(HttpMethod.OPTIONS).permitAll()//allow cors
                 .anyRequest().fullyAuthenticated() // authenticate all remaining URLS
                 .and()
                 .addFilterBefore(new JWTFilter(), UsernamePasswordAuthenticationFilter.class) // adding JWT filter
@@ -45,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // configure the session as stateless -  no session in the server
                 .and()
                 .csrf().disable(); // disable CSRF - Cross Site Request Forgery
+
     }
 }
 
