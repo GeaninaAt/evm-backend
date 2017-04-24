@@ -33,7 +33,7 @@ public class HomeEndpoint {
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        if (userRepository.findOneByUsername(user.getUsername()) != null) {
+        if (userRepository.findByUsername(user.getUsername()) != null) {
             throw new RuntimeException("Username already exists!");
         }
         List<String> roles = new ArrayList<>();
@@ -52,7 +52,7 @@ public class HomeEndpoint {
     public User user(Principal principal) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String loggedUsername = auth.getName();
-        return userRepository.findOneByUsername(loggedUsername);
+        return userRepository.findByUsername(loggedUsername);
     }
 
     /**
@@ -67,7 +67,7 @@ public class HomeEndpoint {
                                                      HttpServletResponse response) throws IOException {
 
         String token;
-        User user = userRepository.findOneByUsername(username);
+        User user = userRepository.findByUsername(username);
         Map<String, Object> tokenMap = new HashMap<>();
 
         if (user != null && user.getPassword().equals(password)) {
