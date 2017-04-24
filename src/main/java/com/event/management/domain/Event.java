@@ -141,4 +141,6 @@ public class Event extends BaseEntity{
     public void setTicketPrice(double ticketPrice) {
         this.ticketPrice = ticketPrice;
     }
+
+    //TODO:Review & Rating
 }
