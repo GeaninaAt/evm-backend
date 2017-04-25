@@ -24,6 +24,8 @@ public class HomeEndpoint {
 
     @Autowired
     private UserRepository userRepository;
+    
+
 
     /**
      * Method used for user registration - does not require any authentication.
@@ -31,6 +33,7 @@ public class HomeEndpoint {
      * @param user
      * @return
      */
+    @CrossOrigin(origins = "*")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<User> createUser(@RequestBody User user) {
         if (userRepository.findOneByUsername(user.getUsername()) != null) {
@@ -48,6 +51,7 @@ public class HomeEndpoint {
      * @param principal
      * @return Principal - java security principal object
      */
+    @CrossOrigin(origins = "*")
     @RequestMapping("/user")
     public User user(Principal principal) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -62,6 +66,7 @@ public class HomeEndpoint {
      * @return JSON containing the token and the user after a successful authentication.
      * @throws IOException
      */
+    @CrossOrigin(origins = "*")
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<Map<String, Object>> login(@RequestParam String username, @RequestParam String password,
                                                      HttpServletResponse response) throws IOException {

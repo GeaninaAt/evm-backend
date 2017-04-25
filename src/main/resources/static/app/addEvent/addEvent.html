@@ -1,0 +1,110 @@
+<div class="container">
+    <div class="row">
+        <h2>Add a new event</h2>
+
+        <form class="form-horizontal">
+            <fieldset>
+
+                <!-- Form Name -->
+                <legend>Complete the form and submit</legend>
+                <div class="alert alert-info" ng-show="userCreated == true">
+                    <strong>Info!</strong> Yor user has been created.
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Event name </label>
+                    <div class="col-md-4">
+                        <input id="textinput" ng-model="eventName" name="textinput" placeholder="Event Name" class="form-control input-md" required="" type="text">
+                        <span class="help-block"> </span>
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Description</label>
+                    <div class="col-md-4">
+                        <input id="textinput" ng-model="description" name="textinput" placeholder="Insert your Last Name" class="form-control input-md" required="" type="text">
+                        <span class="help-block"> </span>
+                    </div>
+                </div>
+
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Start date</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dtStart" is-open="StartDateStatus.opened" datepicker-options="dateOptionsStartDate" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                        <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="StartDate()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">End date</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dtEnd" is-open="EndDateStatus.opened" datepicker-options="dateOptionsEndDate" ng-required="true" close-text="Close" />
+                        <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="EndDate()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Location</label>
+                    <div class="col-md-4">
+                        <label for="sel1">Select Location:</label>
+                        <select ng-model="location" class="form-control" id="sel1">
+                        <option ng-repeat="location in locations">{{location.locationName}}</option>
+                    </select>
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Organizer</label>
+                    <div class="col-md-4">
+                        <label for="sel2">Select organizer:</label>
+                        <select class="form-control" id="sel2" ng-model="organizer">
+                        <option ng-repeat="organizer in organizers">{{organizer.organizerName}}</option>
+                    </select>
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Category</label>
+                    <div class="col-md-4">
+                        <label for="sel3">Select value:</label>
+                        <select class="form-control" id="sel3" ng-model="category">
+                        <option ng-repeat="category in ['OTHER','MUSIC','THEATRE','SPORTS','TECHNOLOGY'] track by $index">{{category}}</option>
+                    </select>
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Is Free </label>
+                    <div class="col-md-4">
+                        <label for="sel4">Select value:</label>
+                        <select class="form-control" id="sel4" ng-model="isFree">
+                        <option ng-repeat="isFree in ['false','true'] track by $index">{{isFree}}</option>
+                    </select>
+                    </div>
+                </div>
+
+                <!-- Button -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="singlebutton"> </label>
+                    <div class="col-md-4">
+                        <button ng-click="addEvent(eventName,description,dtStart,dtEnd,location,organizer,category,isFree)" name="singlebutton" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+
+            </fieldset>
+        </form>
+
+    </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="container">
+    <div class="row">
+        <h2>Add a new Location</h2>
+
+        <form class="form-horizontal">
+            <fieldset>
+
+                <!-- Form Name -->
+                <legend>Complete the form and submit</legend>
+                <div class="alert alert-info" ng-show="userCreated == true">
+                    <strong>Info!</strong> Yor user has been created.
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Location name </label>
+                    <div class="col-md-4">
+                        <input id="textinput" ng-model="eventName" name="textinput" placeholder="Location Name" class="form-control input-md" required="" type="text">
+                        <span class="help-block"> </span>
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">District</label>
+                    <div class="col-md-4">
+                        <input id="textinput" ng-model="description" name="textinput" placeholder="District" class="form-control input-md" required="" type="text">
+                        <span class="help-block"> </span>
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Street</label>
+                    <div class="col-md-4">
+                        <input id="textinput" ng-model="description" name="textinput" placeholder="Street" class="form-control input-md" required="" type="text">
+                        <span class="help-block"> </span>
+                    </div>
+                </div>
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textinput">Number</label>
+                    <div class="col-md-4">
+                        <input id="textinput" ng-model="description" name="textinput" placeholder="Number" class="form-control input-md" required="" type="text">
+                        <span class="help-block"> </span>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+    </div>
+</div>

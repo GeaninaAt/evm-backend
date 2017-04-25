@@ -39,7 +39,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests() // starts authorizing configurations
                 .antMatchers(HttpMethod.OPTIONS).permitAll()//allow cors
+                .antMatchers(HttpMethod.OPTIONS,"**").permitAll()
                 .anyRequest().fullyAuthenticated() // authenticate all remaining URLS
+                .antMatchers(HttpMethod.OPTIONS,"/users").permitAll()
                 .and()
                 .addFilterBefore(new JWTFilter(), UsernamePasswordAuthenticationFilter.class) // adding JWT filter
                 .httpBasic() // enable basic authentication
@@ -47,7 +49,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // configure the session as stateless -  no session in the server
                 .and()
                 .csrf().disable(); // disable CSRF - Cross Site Request Forgery
+          
 
     }
+    
 }
 

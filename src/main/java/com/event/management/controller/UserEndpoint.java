@@ -18,6 +18,7 @@ import java.util.List;
  * Created by gatomulesei on 4/11/2017.
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/users")
 public class UserEndpoint {
 
@@ -28,6 +29,7 @@ public class UserEndpoint {
     /**
      * @return - list of all the users of the application
      */
+    @CrossOrigin(origins = "*")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(method = RequestMethod.GET)
     public List<User> retrieveAllUsers() {

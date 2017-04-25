@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by gatomulesei on 4/5/2017.
  */
-@CrossOrigin(origins = "http://localhost:8000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/rest/events")
 public class EventEndpoint {
