@@ -55,6 +55,14 @@ public class Event extends BaseEntity{
 
     private double ticketPrice;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Rating rating;
+
+    private Float totalScore;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Review review;
+
     public enum Category{
         MUSIC, THEATRE, SPORTS, TECHNOLOGY, OTHER;
 
@@ -140,5 +148,29 @@ public class Event extends BaseEntity{
 
     public void setTicketPrice(double ticketPrice) {
         this.ticketPrice = ticketPrice;
+    }
+
+    public Rating getRating() {
+        return rating;
+    }
+
+    public void setRating(Rating rating) {
+        this.rating = rating;
+    }
+
+    public Float getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(Float totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public Review getReview() {
+        return review;
+    }
+
+    public void setReview(Review review) {
+        this.review = review;
     }
 }

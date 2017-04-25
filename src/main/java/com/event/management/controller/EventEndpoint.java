@@ -1,11 +1,12 @@
 package com.event.management.controller;
 
 import com.event.management.controller.create.CreateEvent;
+import com.event.management.controller.create.CreateRating;
+import com.event.management.controller.create.CreateReview;
 import com.event.management.controller.exception.EventNotFoundException;
 import com.event.management.domain.Event;
-import com.event.management.repository.EventRepository;
-import com.event.management.repository.LocationRepository;
-import com.event.management.repository.OrganizerRepository;
+import com.event.management.domain.User;
+import com.event.management.repository.*;
 import com.event.management.service.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,15 @@ public class EventEndpoint {
 
     @Autowired
     private LocationRepository locationRepository;
+
+    @Autowired
+    private RatingRepository ratingRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     @RequestMapping(method = RequestMethod.POST)
@@ -147,5 +157,59 @@ public class EventEndpoint {
 
         eventService.deleteEvent(eventId);
         return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value = "/rate", method = RequestMethod.POST)
+    public ResponseEntity<?> rateEvent(@RequestBody @Valid CreateRating createRating){
+
+        LOGGER.debug(String.format("Rating event '%d'", createRating.getEventId()));
+
+        //check if event exists
+        if(!eventRepository.exists(createRating.getEventId())){
+            return ResponseEntity.badRequest().body(new ObjectError("rating.event", "Invalid event ID."));
+        }
+
+        //check if user exists
+        User user = userRepository.findByUsername(createRating.getUserName());
+        if(user == null){
+            return ResponseEntity.badRequest().body(new ObjectError("rating.user", "Invalid username."));
+        }
+
+        //check if score is between 1 and 10
+        if((createRating.getScore() < 0) || (createRating.getScore() > 10)){
+            return ResponseEntity.badRequest().body(new ObjectError("rating.score", "Invalid score. Score must be represented by values between 1 and 10."));
+        }
+
+        try{
+            Event ratedEvent = eventService.rateEvent(createRating.getEventId(), user.getId(), createRating.getScore());
+            URI location = URI.create("/rest/events/rate/" + ratedEvent.getId());
+            return ResponseEntity.created(location).body(ratedEvent);
+        } catch (UnsupportedOperationException exception){
+            return ResponseEntity.badRequest().body(new ObjectError("event.id", exception.getMessage()));
+        }
+    }
+
+
+    @RequestMapping(value = "/review", method = RequestMethod.POST)
+    public ResponseEntity<?> reviewEvent(@RequestBody @Valid CreateReview createReview){
+
+        LOGGER.debug(String.format("Reviewing event '%d'", createReview.getEventId()));
+
+        if(!eventRepository.exists(createReview.getEventId())){
+            return ResponseEntity.badRequest().body(new ObjectError("review.event", "Invalid event ID."));
+        }
+
+        User user = userRepository.findByUsername(createReview.getUserName());
+        if(user == null){
+            return ResponseEntity.badRequest().body(new ObjectError("review.user", "Invalid user ID."));
+        }
+
+        try{
+            Event reviewedEvent = eventService.reviewEvent(createReview.getEventId(), user.getId(), createReview.getText());
+            URI location = URI.create("/rest/events/review/" + reviewedEvent.getId());
+            return ResponseEntity.created(location).body(reviewedEvent);
+        } catch (UnsupportedOperationException exception){
+            return ResponseEntity.badRequest().body(new ObjectError("event.id", exception.getMessage()));
+        }
     }
 }

@@ -1,12 +1,9 @@
 package com.event.management.config;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -29,6 +26,7 @@ public class JWTFilter extends GenericFilterBean {
     private static final String AUTHORITIES_KEY = "roles";
 
     @Override
+<<<<<<< HEAD
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String authHeader = httpServletRequest.getHeader(AUTHORIZATION_HEADER);
@@ -47,9 +45,26 @@ public class JWTFilter extends GenericFilterBean {
             } catch (SignatureException e) {
                 ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token.");
             }
+=======
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+        HttpServletResponse response = (HttpServletResponse) res;
+        HttpServletRequest request = (HttpServletRequest) req;
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+>>>>>>> 5e3d9abe4d3edc1fb8e23554e52bc10efa3a86e1
 
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            //  chain.doFilter(req, res);
+        } else {
+            chain.doFilter(req, res);
         }
     }
+
+    @Override
+    public void destroy() {}
 
     /**
      * Method used to create authentication for Spring Security Context Holder from JWT claims

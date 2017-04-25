@@ -121,4 +121,10 @@ public class User extends BaseEntity implements UserDetails {
         return username;
     }
 
+    //TODO: One more role - The organiser of an event is able to add an event himself with the Administrator's approval.
+    //TODO: The Administrator is notified via E-Mail when a new event has been added.
+
+    //TODO: Validations
+
+    //TODO: Comments added
 }
