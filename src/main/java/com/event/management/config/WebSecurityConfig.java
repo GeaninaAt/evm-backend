@@ -40,8 +40,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests() // starts authorizing configurations
                 .antMatchers(HttpMethod.OPTIONS).permitAll()//allow cors
                 .antMatchers(HttpMethod.OPTIONS,"**").permitAll()
-<<<<<<< HEAD
-=======
                 .antMatchers(HttpMethod.GET).permitAll()//allow cors
                 .antMatchers(HttpMethod.GET,"**").permitAll()
                 .antMatchers(HttpMethod.GET,"/users").permitAll()
@@ -51,7 +49,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE).permitAll()//allow cors
                 .antMatchers(HttpMethod.DELETE,"**").permitAll()
                 .antMatchers(HttpMethod.DELETE,"/users").permitAll()
->>>>>>> 5e3d9abe4d3edc1fb8e23554e52bc10efa3a86e1
                 .anyRequest().fullyAuthenticated() // authenticate all remaining URLS
                 .antMatchers(HttpMethod.OPTIONS,"/users").permitAll()
                 .and()
@@ -61,11 +58,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // configure the session as stateless -  no session in the server
                 .and()
                 .csrf().disable(); // disable CSRF - Cross Site Request Forgery
-<<<<<<< HEAD
-          
-
-=======
->>>>>>> 5e3d9abe4d3edc1fb8e23554e52bc10efa3a86e1
     }
     
 }
