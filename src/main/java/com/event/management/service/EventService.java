@@ -1,17 +1,16 @@
 package com.event.management.service;
 
-import com.event.management.domain.Event;
-import com.event.management.domain.Rating;
-import com.event.management.domain.Review;
+import com.event.management.domain.*;
 import com.event.management.repository.EventRepository;
 import com.event.management.repository.RatingRepository;
+import com.event.management.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by gatomulesei on 4/5/2017.
@@ -28,9 +27,38 @@ public class EventService {
     @Autowired
     private RatingRepository ratingRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+/*
+
+    @Autowired
+    private EventUserRepository eventUserRepository;
+*/
+
 
     public Event addEvent(Event event) {
-        return eventRepository.save(event);
+        Event createdEvent = eventRepository.save(event);
+/*
+        //set user list to be added
+        Set<EventUser> eventUserSet = new HashSet<>();
+
+        EventUser eventUser;
+        List<Long> usersIds = event.getUsersIds();
+
+        for(Long userId : usersIds){
+            eventUser = new EventUser();
+            User user = userRepository.findOne(userId);
+            if(user == null){
+                String msg = "Invalid user for userId: " + userId;
+                LOGGER.error(msg);
+            }
+            eventUser.setUser(user);
+            eventUser.setEvent(createdEvent);
+            eventUserSet.add(eventUser);
+        }
+
+        createdEvent.setEventUsers(eventUserSet);*/
+        return createdEvent;
     }
 
     public Event getEvent(Long eventId) {
@@ -88,4 +116,24 @@ public class EventService {
         Event reviewedEvent = eventRepository.save(targetEvent);
         return reviewedEvent;
     }
+
+    /*private List<Long> getListOfUsersIds(Event event) {
+        List<Long> usersIds = event.getUsersIds();
+        Iterator<Long> iterator = usersIds.iterator();
+        while(iterator.hasNext()){
+            Long id = iterator.next();
+        }
+        return usersIds;
+    }
+
+    private List<Long> getUsersIds(Event event){
+        List<Long> usersIds = new ArrayList<>();
+        Set<EventUser> users = event.getEventUsers();
+
+        for(EventUser user : users){
+            Long id = user.getUser().getId();
+            usersIds.add(id);
+        }
+        return usersIds;
+    }*/
 }

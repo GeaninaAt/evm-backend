@@ -63,6 +63,22 @@ public class Event extends BaseEntity{
     @ManyToOne(cascade = CascadeType.ALL)
     private Review review;
 
+
+
+
+/*    @Transient
+    private List<Long> usersIds;
+
+    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "event-eventuser")
+    @JsonIgnore
+    private Set<EventUser> eventUsers;
+
+    @Transient
+    private List<User> users;*/
+
+
+
     public enum Category{
         MUSIC, THEATRE, SPORTS, TECHNOLOGY, OTHER;
 
@@ -173,4 +189,28 @@ public class Event extends BaseEntity{
     public void setReview(Review review) {
         this.review = review;
     }
+/*
+    public List<Long> getUsersIds() {
+        return usersIds;
+    }
+
+    public void setUsersIds(List<Long> usersIds) {
+        this.usersIds = usersIds;
+    }
+
+    public Set<EventUser> getEventUsers() {
+        return eventUsers;
+    }
+
+    public void setEventUsers(Set<EventUser> eventUsers) {
+        this.eventUsers = eventUsers;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }*/
 }

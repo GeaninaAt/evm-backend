@@ -1,9 +1,6 @@
 package com.event.management.domain;
 
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -13,7 +10,7 @@ import java.io.Serializable;
 public class Review {
 
     @Embeddable
-    public static class ReviewId implements Serializable {
+    public static class ReviewId implements Serializable{
 
         private static final long serialVersionUID = 1L;
 
@@ -42,6 +39,7 @@ public class Review {
         public void setUserId(Long userId) {
             this.userId = userId;
         }
+
     }
 
     @EmbeddedId
@@ -65,4 +63,6 @@ public class Review {
     public void setText(String text) {
         this.text = text;
     }
+
+
 }

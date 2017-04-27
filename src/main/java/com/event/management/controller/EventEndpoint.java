@@ -27,7 +27,7 @@ import java.util.List;
 @RequestMapping("/rest/events")
 public class EventEndpoint {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventEndpoint.class);
+    private static final Logger LOGGER = (Logger) LoggerFactory.getLogger(EventEndpoint.class);
 
     @Autowired
     private EventRepository eventRepository;
@@ -42,13 +42,12 @@ public class EventEndpoint {
     private LocationRepository locationRepository;
 
     @Autowired
-    private RatingRepository ratingRepository;
-
-    @Autowired
-    private ReviewRepository reviewRepository;
-
-    @Autowired
     private UserRepository userRepository;
+
+/*
+    @Autowired
+    private EventUserRepository eventUserRepository;
+*/
 
 
     @RequestMapping(method = RequestMethod.POST)
