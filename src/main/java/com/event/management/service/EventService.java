@@ -33,35 +33,10 @@ public class EventService {
 
     @Autowired
     private ReviewRepository reviewRepository;
-/*
-
-    @Autowired
-    private EventUserRepository eventUserRepository;
-*/
 
 
     public Event addEvent(Event event) {
         Event createdEvent = eventRepository.save(event);
-/*
-        //set user list to be added
-        Set<EventUser> eventUserSet = new HashSet<>();
-
-        EventUser eventUser;
-        List<Long> usersIds = event.getUsersIds();
-
-        for(Long userId : usersIds){
-            eventUser = new EventUser();
-            User user = userRepository.findOne(userId);
-            if(user == null){
-                String msg = "Invalid user for userId: " + userId;
-                LOGGER.error(msg);
-            }
-            eventUser.setUser(user);
-            eventUser.setEvent(createdEvent);
-            eventUserSet.add(eventUser);
-        }
-
-        createdEvent.setEventUsers(eventUserSet);*/
         return createdEvent;
     }
 
@@ -122,6 +97,8 @@ public class EventService {
 
         Review review1 = setProperties(currentUser, currentEvent, review);
         Review savedReview = reviewRepository.save(review1);
+
+        currentEvent.getReviews().add(savedReview);
         return currentEvent;
     }
 
@@ -131,23 +108,4 @@ public class EventService {
         return review;
     }
 
-    /*private List<Long> getListOfUsersIds(Event event) {
-        List<Long> usersIds = event.getUsersIds();
-        Iterator<Long> iterator = usersIds.iterator();
-        while(iterator.hasNext()){
-            Long id = iterator.next();
-        }
-        return usersIds;
-    }
-
-    private List<Long> getUsersIds(Event event){
-        List<Long> usersIds = new ArrayList<>();
-        Set<EventUser> users = event.getEventUsers();
-
-        for(EventUser user : users){
-            Long id = user.getUser().getId();
-            usersIds.add(id);
-        }
-        return usersIds;
-    }*/
 }

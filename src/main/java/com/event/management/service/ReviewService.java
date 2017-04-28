@@ -1,5 +1,6 @@
 package com.event.management.service;
 
+import com.event.management.domain.Event;
 import com.event.management.domain.Review;
 import com.event.management.repository.EventRepository;
 import com.event.management.repository.ReviewRepository;
@@ -32,15 +33,15 @@ public class ReviewService {
 
 
 
-/*    public List<Review> findAllByEvent(Long eventId){
+    public List<Review> findAllByEvent(Long eventId){
         Event currentEvent = eventRepository.findOne(eventId);
         if(currentEvent == null){
             LOGGER.error(String.format("No event found with the given ID."));
         }
 
-        List<Review> eventReviews = reviewRepository.findByIdEventId(eventId);
+        List<Review> eventReviews = reviewRepository.findByEventId(eventId);
         return eventReviews;
-    }*/
+    }
 
     public void deleteReview(Long reviewId){
         reviewRepository.delete(reviewId);

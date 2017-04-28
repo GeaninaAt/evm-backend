@@ -221,9 +221,9 @@ public class EventEndpoint {
         }
     }
 
-/*    @RequestMapping(value = "/review/{eventId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/review/{eventId}", method = RequestMethod.GET)
     public List<Review> findAllByEvent(@PathVariable(name = "eventId") Long eventId){
         List<Review> eventReviews = reviewService.findAllByEvent(eventId);
         return eventReviews;
-    }*/
+    }
 }

@@ -2,6 +2,7 @@ package com.event.management.domain;
 
 import com.event.management.domain.validation.CheckEventCategory;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -59,6 +60,10 @@ public class Event extends BaseEntity{
     private Rating rating;
 
     private Float totalScore;
+
+    @OneToMany
+    @JsonManagedReference
+    private List<Review> reviews;
 
 
 /*    @Transient
@@ -177,8 +182,15 @@ public class Event extends BaseEntity{
         this.totalScore = totalScore;
     }
 
+    public List<Review> getReviews() {
+        return reviews;
+    }
 
-/*
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    /*
     public List<Long> getUsersIds() {
         return usersIds;
     }

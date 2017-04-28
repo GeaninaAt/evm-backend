@@ -1,20 +1,23 @@
 package com.event.management.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * Created by gatomulesei on 4/24/2017.
  */
 @Entity
-public class Review extends BaseEntity implements Serializable {
+public class Review extends BaseEntity{
 
     private static final long serialVersionUID = 1L;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JsonBackReference
     private Event event;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JsonBackReference
     private User user;
 
     @Lob
@@ -51,4 +54,6 @@ public class Review extends BaseEntity implements Serializable {
     public void setMessage(String message) {
         this.message = message;
     }
+
+
 }
