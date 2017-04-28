@@ -5,9 +5,11 @@ import com.event.management.controller.create.CreateRating;
 import com.event.management.controller.create.CreateReview;
 import com.event.management.controller.exception.EventNotFoundException;
 import com.event.management.domain.Event;
+import com.event.management.domain.Review;
 import com.event.management.domain.User;
 import com.event.management.repository.*;
 import com.event.management.service.EventService;
+import com.event.management.service.ReviewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,9 @@ public class EventEndpoint {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ReviewService reviewService;
 
 /*
     @Autowired
@@ -198,17 +203,27 @@ public class EventEndpoint {
             return ResponseEntity.badRequest().body(new ObjectError("review.event", "Invalid event ID."));
         }
 
-        User user = userRepository.findByUsername(createReview.getUserName());
+        User user = userRepository.findOne(createReview.getUserId());
         if(user == null){
             return ResponseEntity.badRequest().body(new ObjectError("review.user", "Invalid user ID."));
         }
 
         try{
-            Event reviewedEvent = eventService.reviewEvent(createReview.getEventId(), user.getId(), createReview.getText());
+            Review review = new Review();
+            review.setUser(userRepository.findOne(createReview.getUserId()));
+            review.setEvent(eventRepository.findOne(createReview.getEventId()));
+            review.setMessage(createReview.getMessage());
+            Event reviewedEvent = eventService.addReview(review);
             URI location = URI.create("/rest/events/review/" + reviewedEvent.getId());
             return ResponseEntity.created(location).body(reviewedEvent);
         } catch (UnsupportedOperationException exception){
             return ResponseEntity.badRequest().body(new ObjectError("event.id", exception.getMessage()));
         }
     }
+
+/*    @RequestMapping(value = "/review/{eventId}", method = RequestMethod.GET)
+    public List<Review> findAllByEvent(@PathVariable(name = "eventId") Long eventId){
+        List<Review> eventReviews = reviewService.findAllByEvent(eventId);
+        return eventReviews;
+    }*/
 }

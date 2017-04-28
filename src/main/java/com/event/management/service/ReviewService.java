@@ -1,7 +1,9 @@
 package com.event.management.service;
 
 import com.event.management.domain.Review;
+import com.event.management.repository.EventRepository;
 import com.event.management.repository.ReviewRepository;
+import com.event.management.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +24,23 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    public Review addReview(Review review){
-        if(review == null){
-            LOGGER.error("Exception while persisting Review object. Object is null.");
-            throw new UnsupportedOperationException("Add Review could not be performed.");
+    @Autowired
+    private EventRepository eventRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+
+
+/*    public List<Review> findAllByEvent(Long eventId){
+        Event currentEvent = eventRepository.findOne(eventId);
+        if(currentEvent == null){
+            LOGGER.error(String.format("No event found with the given ID."));
         }
 
-        return reviewRepository.save(review);
-    }
+        List<Review> eventReviews = reviewRepository.findByIdEventId(eventId);
+        return eventReviews;
+    }*/
 
     public void deleteReview(Long reviewId){
         reviewRepository.delete(reviewId);

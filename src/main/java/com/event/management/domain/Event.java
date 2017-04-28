@@ -60,11 +60,6 @@ public class Event extends BaseEntity{
 
     private Float totalScore;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Review review;
-
-
-
 
 /*    @Transient
     private List<Long> usersIds;
@@ -182,13 +177,7 @@ public class Event extends BaseEntity{
         this.totalScore = totalScore;
     }
 
-    public Review getReview() {
-        return review;
-    }
 
-    public void setReview(Review review) {
-        this.review = review;
-    }
 /*
     public List<Long> getUsersIds() {
         return usersIds;

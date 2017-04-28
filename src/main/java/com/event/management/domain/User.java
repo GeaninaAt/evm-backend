@@ -7,10 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -41,7 +38,7 @@ public class User extends BaseEntity implements UserDetails {
     private List<String> roles = new ArrayList<>();
 
 
-/*    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+/*  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonManagedReference(value = "user-eventuser")
     @JsonIgnore
     private List<EventUser> eventUsers;*/
@@ -85,6 +82,7 @@ public class User extends BaseEntity implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
+
 
 /*
     public List<EventUser> getEventUsers() {

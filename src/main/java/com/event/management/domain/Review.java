@@ -7,62 +7,48 @@ import java.io.Serializable;
  * Created by gatomulesei on 4/24/2017.
  */
 @Entity
-public class Review {
+public class Review extends BaseEntity implements Serializable {
 
-    @Embeddable
-    public static class ReviewId implements Serializable{
+    private static final long serialVersionUID = 1L;
 
-        private static final long serialVersionUID = 1L;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    private Event event;
 
-        private Long eventId;
-        private Long userId;
-
-        public ReviewId(){}
-
-        public ReviewId(Long eventId, Long userId){
-            this.eventId = eventId;
-            this.userId = userId;
-        }
-
-        public Long getEventId() {
-            return eventId;
-        }
-
-        public void setEventId(Long eventId) {
-            this.eventId = eventId;
-        }
-
-        public Long getUserId() {
-            return userId;
-        }
-
-        public void setUserId(Long userId) {
-            this.userId = userId;
-        }
-
-    }
-
-    @EmbeddedId
-    private ReviewId id = new ReviewId();
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    private User user;
 
     @Lob
-    private String text;
+    private String message;
 
-    public ReviewId getId() {
-        return id;
+    public Review(){}
+
+    public Review(User user, Event event, String message){
+        this.user = user;
+        this.event = event;
+        this.message = message;
     }
 
-    public void setId(ReviewId id) {
-        this.id = id;
+    public Event getEvent() {
+        return event;
     }
 
-    public String getText() {
-        return text;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public User getUser() {
+        return user;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

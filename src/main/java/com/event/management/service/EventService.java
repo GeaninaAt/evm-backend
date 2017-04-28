@@ -3,6 +3,7 @@ package com.event.management.service;
 import com.event.management.domain.*;
 import com.event.management.repository.EventRepository;
 import com.event.management.repository.RatingRepository;
+import com.event.management.repository.ReviewRepository;
 import com.event.management.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,9 @@ public class EventService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
 /*
 
     @Autowired
@@ -104,17 +108,27 @@ public class EventService {
         return totalScore;
     }
 
-    public Event reviewEvent(Long eventId, Long userId, String text){
-        Event targetEvent = eventRepository.findOne(eventId);
+    public Event addReview(Review review){
+        User currentUser = userRepository.findOne(review.getUser().getId());
+        Event currentEvent = eventRepository.findOne(review.getEvent().getId());
 
-        Review review = new Review();
-        review.setText(text);
-        Review.ReviewId reviewId = new Review.ReviewId(eventId, userId);
-        review.setId(reviewId);
+        if(currentEvent == null){
+            LOGGER.error(String.format("No event found with the given ID."));
+        }
 
-        targetEvent.setReview(review);
-        Event reviewedEvent = eventRepository.save(targetEvent);
-        return reviewedEvent;
+        if(currentUser == null){
+            LOGGER.error(String.format("No user found with the given ID."));
+        }
+
+        Review review1 = setProperties(currentUser, currentEvent, review);
+        Review savedReview = reviewRepository.save(review1);
+        return currentEvent;
+    }
+
+    private Review setProperties(User user, Event event, Review review){
+        review.setEvent(event);
+        review.setUser(user);
+        return review;
     }
 
     /*private List<Long> getListOfUsersIds(Event event) {
