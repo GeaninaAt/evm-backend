@@ -203,14 +203,14 @@ public class EventEndpoint {
             return ResponseEntity.badRequest().body(new ObjectError("review.event", "Invalid event ID."));
         }
 
-        User user = userRepository.findOne(createReview.getUserId());
+        User user = userRepository.findByUsername(createReview.getUserName());
         if(user == null){
-            return ResponseEntity.badRequest().body(new ObjectError("review.user", "Invalid user ID."));
+            return ResponseEntity.badRequest().body(new ObjectError("review.user", "Invalid username."));
         }
 
         try{
             Review review = new Review();
-            review.setUser(userRepository.findOne(createReview.getUserId()));
+            review.setUser(userRepository.findByUsername(createReview.getUserName()));
             review.setEvent(eventRepository.findOne(createReview.getEventId()));
             review.setMessage(createReview.getMessage());
             Event reviewedEvent = eventService.addReview(review);
